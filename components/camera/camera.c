@@ -247,26 +247,26 @@ esp_err_t camera_run()
 
 void camera_print_fb()
 {
-	/* Number of pixels to skip
-	   in order to fit into terminal screen.
-	   Assumed picture to be 80 columns wide.
-	   Skip twice as more rows as they look higher.
-	 */
-	int pixels_to_skip = s_fb_w / 80;
+    /* Number of pixels to skip
+       in order to fit into terminal screen.
+       Assumed picture to be 80 columns wide.
+       Skip twice as more rows as they look higher.
+     */
+    int pixels_to_skip = s_fb_w / 80;
 
     for (int ih = 0; ih < s_fb_h; ih += pixels_to_skip * 2){
         for (int iw = 0; iw < s_fb_w; iw += pixels_to_skip){
-    	    uint8_t px = (s_fb[iw + (ih * s_fb_w)]);
-    	    if      (px <  26) printf(" ");
-    	    else if (px <  51) printf(".");
-    	    else if (px <  77) printf(":");
-    	    else if (px < 102) printf("-");
-    	    else if (px < 128) printf("=");
-    	    else if (px < 154) printf("+");
-    	    else if (px < 179) printf("*");
-    	    else if (px < 205) printf("#");
-    	    else if (px < 230) printf("%%");
-    	    else               printf("@");
+            uint8_t px = (s_fb[iw + (ih * s_fb_w)]);
+            if      (px <  26) printf(" ");
+            else if (px <  51) printf(".");
+            else if (px <  77) printf(":");
+            else if (px < 102) printf("-");
+            else if (px < 128) printf("=");
+            else if (px < 154) printf("+");
+            else if (px < 179) printf("*");
+            else if (px < 205) printf("#");
+            else if (px < 230) printf("%%");
+            else               printf("@");
         }
         printf("\n");
     }
@@ -274,10 +274,10 @@ void camera_print_fb()
 
 static esp_err_t dma_desc_init(int line_width)
 {
-	/* I2S peripheral captures 16 bit of data every clock cycle,
-	   even though we are only using 8 bits.
-	   On top of that we need two bytes per pixel.
-	 */
+    /* I2S peripheral captures 16 bit of data every clock cycle,
+       even though we are only using 8 bits.
+       On top of that we need two bytes per pixel.
+     */
     size_t buf_size = line_width * 4;
     for (int i = 0; i < 2; ++i) {
         ESP_LOGD(TAG, "Allocating DMA buffer #%d, size=%d", i, buf_size);
