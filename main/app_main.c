@@ -29,12 +29,35 @@
 
 static const char* TAG = "camera_demo";
 
+/* Use this option to swap GPIO pin mapping
+   between standard ESP-WROVER V1 (aka DevKitJ)
+   and some other / alternate mapping
+*/
+#define ALTERNATE_GPIO_MAPPING 0
 
 void app_main()
 {
     camera_config_t config = {
         .ledc_channel = LEDC_CHANNEL_0,
         .ledc_timer = LEDC_TIMER_0,
+        .xclk_freq_hz = 20000000
+#if ALTERNATE_GPIO_MAPPING
+        .pin_d0 = 35,
+        .pin_d1 = 17,
+        .pin_d2 = 34,
+        .pin_d3 = 5,
+        .pin_d4 = 39,
+        .pin_d5 = 18,
+        .pin_d6 = 36,
+        .pin_d7 = 19,
+        .pin_xclk = 27,
+        .pin_pclk = 21,
+        .pin_vsync = 22,
+        .pin_href = 26,
+        .pin_sscb_sda = 25,
+        .pin_sscb_scl = 23,
+        .pin_reset = 15,
+#else
         .pin_d0 = 4,
         .pin_d1 = 5,
         .pin_d2 = 18,
@@ -50,7 +73,7 @@ void app_main()
         .pin_sscb_sda = 26,
         .pin_sscb_scl = 27,
         .pin_reset = 2,
-        .xclk_freq_hz = 10000000
+#endif
     };
 
     esp_err_t err  = camera_init(&config);
@@ -62,12 +85,11 @@ void app_main()
     while(true){
         err = camera_run();
         if (err != ESP_OK){
-	        ESP_LOGD(TAG, "Camera capture failed with error = %d", err);
+            ESP_LOGD(TAG, "Camera capture failed with error = %d", err);
         } else {
-	        ESP_LOGD(TAG, "Done");
-	        camera_print_fb();
+            ESP_LOGD(TAG, "Done");
+            camera_print_fb();
         }
         vTaskDelay(1000 / portTICK_RATE_MS);
     }
 }
-
