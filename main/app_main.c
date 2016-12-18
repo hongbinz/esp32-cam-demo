@@ -40,7 +40,6 @@ void app_main()
     camera_config_t config = {
         .ledc_channel = LEDC_CHANNEL_0,
         .ledc_timer = LEDC_TIMER_0,
-        .xclk_freq_hz = 20000000
 #if ALTERNATE_GPIO_MAPPING
         .pin_d0 = 35,
         .pin_d1 = 17,
@@ -74,6 +73,7 @@ void app_main()
         .pin_sscb_scl = 27,
         .pin_reset = 2,
 #endif
+        .xclk_freq_hz = 20000000
     };
 
     esp_err_t err  = camera_init(&config);
